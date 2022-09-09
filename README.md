@@ -45,3 +45,98 @@ The Relation Recommender for ArchiMate is currently in a Beta testing phase. You
 
 1. Now create a relation using the Smart Connector and see how the Relation Recommender picks a relation type for you.
 
+
+## Training your own relation recommender
+
+If you are interested in machine learning, you can follow the instructions below to create your own relation recommender. Can you increase the performance and accuracy even further?
+
+### Project setup
+
+- Clone the following github repository and CD into it:
+
+  ```
+  git clone git@github.com:m-steen/ml4ea.git
+  cd ml4ea
+  ```
+
+  Alternatively, first create your own fork in github and clone that one.
+
+- Verify your Python installation
+
+  ```
+  python --version
+  ```
+
+  If you don't have Python or its version is lower than 3.7, install or upgrade Python.
+
+- Create a virtual environment
+
+  ```
+  python -m venv .venv
+  ```
+
+- Activate the virtual environment
+
+  You need to do this every time you work with this project, otherwise the required python libraries cannot be found.
+
+  On macOS and Linux:
+  ```
+  source .venv/Scripts/activate
+  ```
+
+  On Windows:
+  ```
+  .\.venv\Scripts\activate
+  ```
+
+- Install the required libraries:
+
+  ```
+  pip install -r requirements.txt
+  ```
+
+- Git configuration
+
+  _This step is only necessary if you intend to make changes and contribute them._
+
+  Configure git to clear the output of Jupyter Notebooks before committing them:
+
+  ```
+  git config --local include.path ../.gitconfig
+  ```
+
+### Generate a dataset
+
+Before you can train your own relation recommender, you need a dataset with example relations to train the recommender on.
+
+The [`scripts/`](scripts/) folder in the ml4ea code repository contains a [script](scripts/generate_training_data.script) that can be executed in Enterprise Studio to generate a dataset based on your own model package. After generating, copy the output of the script to a CSV file in the [`data/`](data/) folder of this project.
+
+To start with, we have selected the following features:
+
+- **sourceType**: the type of the source object of the relation;
+- **targetType**: the type of the target object;
+- **viewType**: the type of the view on which the relation appears.
+
+The target for our predictions is:
+
+- **relationType**: the type of the relation, being one of the 11 different ArchiMate relation types.
+
+### Running the Jupyter notebook
+
+We have prepared a [Jupyter notebook](RelationRecommenderNotebook.ipynb) which you can use to perform all the steps necessary to create your own relation recommender:
+- read and pre-process the training data, 
+- train the recommender, and
+- evaluate and test the recommender.
+
+To run the notebook, first start the Jupyter notebook server locally by executing the following on the command line:
+
+```
+jupyter notebook
+```
+
+Then open a browser at [localhost:8888](http://localhost:8888/), and open the RelationRecommenderNotebook. The notebook is pretty self-descriptive. Execute each step by selecting it and pressing **Shift**+**Enter**. 
+
+## Next steps
+After you have executed all the steps of the notebook, you can try to improve the accuracy of the recommendations. For example, you could try a different algorithm, or different training parameters. Another option is to include additional features in the dataset. What features would be good predictors for the relation type?
+
+Share your results with us at our community site or by making a pull request to the github repository.

@@ -1,0 +1,13 @@
+{
+  "python.pythonPath": ".venv\\Scripts\\python.exe",
+  "cSpell.words": [
+    "Archi",
+    "figsize",
+    "forall",
+    "matplotlib",
+    "metamodel",
+    "modelpackage",
+    "pyplot",
+    "sklearn"
+  ]
+}
