@@ -1,0 +1,56 @@
+/*
+ * generate_training_data.script
+ * 
+ * This script can be executed in Bizzdesign Enterprise Studio
+ * and will generate a table with data for training the relation recommender.
+ * 
+ * Licensed under the GNU GENERAL PUBLIC LICENSE Version 3 by Bizzdesign.
+ */
+
+config = InternalObject("configuration").context(modelpackage);
+
+function qualifiedName(type)
+{
+	metamodelName = type.metaModel().name();
+	return metamodelName + ":" + type.name();
+}
+
+function typeFor(object)
+{
+	qualifiedName = object.type().name();
+	segments = qualifiedName.split(":");
+	metamodelName = segments.size() > 1 ? segments[1] : "";
+	typeName = segments.size() > 1 ? segments[2] : segments[1];
+	type = config.metaModel(metamodelName).concept(typeName);
+	if (type.derivesFrom("AbstractRelation"))
+	{
+		while (type.baseConcept().name() != "AbstractRelation")
+		{
+			type = type.baseConcept();
+		}
+	}
+	return type;
+}
+
+
+header "sourceType", "targetType", "viewType", "relationType";
+
+forall "ArchiMateMM_Model" mod in modelpackage
+{
+	forall "AbstractView" view in mod
+	{
+		viewType = view.type().name();
+		forall "AbstractRelationRef" relRef in view
+		{
+			if (relRef.parent("AbstractView") != view) continue;
+			relation = relRef.to;
+			if (relation.isValid())
+			{
+				sourceType = typeFor(relation.from);
+				targetType = typeFor(relation.to);
+				relationType = typeFor(relation);
+				output qualifiedName(sourceType), qualifiedName(targetType), viewType, qualifiedName(relationType);
+			}
+		}
+	}
+}
