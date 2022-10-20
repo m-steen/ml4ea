@@ -4,10 +4,14 @@
     "Archi",
     "figsize",
     "forall",
+    "Horizzon",
     "matplotlib",
     "metamodel",
     "modelpackage",
     "pyplot",
     "sklearn"
+  ],
+  "cSpell.ignoreWords": [
+    "venv"
   ]
 }
