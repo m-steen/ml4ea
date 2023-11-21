@@ -9,12 +9,18 @@
 
 config = InternalObject("configuration").context(modelpackage);
 
+/**
+ * @param {Concept} type 
+ */
 function qualifiedName(type)
 {
 	metamodelName = type.metaModel().name();
 	return metamodelName + ":" + type.name();
 }
 
+/**
+ * @param {Object} object 
+ */
 function typeFor(object)
 {
 	qualifiedName = object.type().name();
